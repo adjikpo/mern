@@ -5,11 +5,16 @@ import Person from '../models/personModel';
 
 export const signUp = async (req, res) => {
   let person = new Person(req.body);
-  let createPerson = await person.save();
-  res.json(createPerson);
+  try {
+    let createPerson = await person.save();
+    res.json(createPerson);
+  } catch (error) {
+    res.send('Error cet utilisateur est déjà en base');
+  }
 };
 
 export const login = async (req, res) => {
+  console.log(req.body);
   const person = await Person.findOne({ email: req.body.email });
 
   if (!person) {
@@ -18,7 +23,7 @@ export const login = async (req, res) => {
   const password = req.body.password;
   bcrypt.compare(password, person.password, function (error, success) {
     if (success) {
-      res.send('good');
+      //console.log('Hello ' + person.firstName + ' ' + person.lastName);
       const payload = {
         exp: moment().add(1, 'hour').unix(),
         iat: moment().unix(),
@@ -26,13 +31,14 @@ export const login = async (req, res) => {
       };
 
       let token = jwt.encode(payload, process.env.TOKEN_SECRET);
-      req.json({
+      res.json({
         firstName: person.firstName,
         lastName: person.lastName,
         token: `Bearer ${token}`,
         expiration: moment().add(1, 'hour').format('YYYY-MM-DD HH:mm:ss')
       });
+    } else {
+      res.send('password incorect');
     }
-    res.send('password incorect');
   });
 };
