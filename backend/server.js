@@ -61,7 +61,7 @@ dotenv.config();
 
 mongoose
   .connect(
-    `mongodb://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.MONGO_PORT}/${process.env.DATABASE}`,
+    `mongodb://${process.env.DB_USERNAME}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.MONGO_PORT}/${process.env.DATABASE}`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true
@@ -72,7 +72,7 @@ mongoose
   });
 // routes
 app.use('/', indexRouter);
-app.use('/palyer', playerRouter);
+app.use('/player', playerRouter);
 app.use('/message', messageRouter);
 app.use('/user', userRouter);
 
