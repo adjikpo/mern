@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import mongoSanitize from 'express-mongo-sanitize';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import hpp from 'hpp';
@@ -13,6 +14,7 @@ import responseTime from 'response-time';
 import favicon from 'serve-favicon';
 import indexRouter from './routes/index';
 import messageRouter from './routes/message';
+import personRouter from './routes/person';
 import playerRouter from './routes/player';
 import userRouter from './routes/user';
 
@@ -56,9 +58,8 @@ app.use(
     message: 'Too many requests from this IP, please try again in 15 minutes'
   })
 );
-
+app.use(mongoSanitize());
 dotenv.config();
-
 mongoose
   .connect(
     `mongodb://${process.env.DB_USERNAME}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.MONGO_PORT}/${process.env.DATABASE}`,
@@ -75,6 +76,7 @@ app.use('/', indexRouter);
 app.use('/player', playerRouter);
 app.use('/message', messageRouter);
 app.use('/user', userRouter);
+app.use('/person', personRouter);
 
 // setup ip address and port number
 app.set('port', process.env.PORT || 3000);
