@@ -1,8 +1,8 @@
 import express from 'express';
-import { login, signUp } from '../controllers/personnController';
+import { login, signUp } from '../controllers/personController';
 let personRouter = express.Router();
 
-personRouter.post('/', signUp);
+personRouter.post('/signup', signUp);
 personRouter.post('/', login);
 
 export default personRouter;
