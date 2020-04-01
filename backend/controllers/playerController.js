@@ -27,7 +27,7 @@ export const getAll = (req, res) => {
 export const getById = (req, res) => {
   Player.findById(req.params.id, (error, players) => {
     if (error) {
-      res.send('error to get player');
+      res.status(401).send('error to get player');
     }
     res.json(players);
   });
@@ -44,7 +44,7 @@ export const update = (req, res) => {
     },
     (error, updatedPlayer) => {
       if (error) {
-        res.send('error to update');
+        res.status(401).send('error to update');
       }
       res.json(updatedPlayer);
     }
@@ -58,7 +58,7 @@ export const remove = (req, res) => {
     },
     (error, deletedPlayer) => {
       if (error) {
-        res.send('error to update');
+        res.send('error to remove');
       }
       res.send('delete player is ok ! ');
     }
