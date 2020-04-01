@@ -6,8 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
+import axios from 'axios';
 import { Formik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as yup from 'yup';
@@ -32,6 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 const SignUp = () => {
   const classes = useStyles();
+  const [data, setData] = useState({});
 
   return (
     <div>
@@ -48,6 +50,9 @@ const SignUp = () => {
         validationSchema={validationRules}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
+
+          axios.post('http://localhost:3000/person/signup', values).then(response => setData(response));
+
           setTimeout(() => {
             setSubmitting(false);
             toast.info('👍 Your registration has been sent', {
